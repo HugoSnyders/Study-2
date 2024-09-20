@@ -1,0 +1,492 @@
+[
+  {
+    "text": "More frequent wildfires predicted globally due to climate change",
+    "topic": "Climate Change",
+    "info": true,
+    "length": 9,
+    "code": "AT1"
+  },
+  {
+    "text": "Glaciers are losing ice at an accelerating pace",
+    "topic": "Climate Change",
+    "info": true,
+    "length": 8,
+    "code": "AT2"
+  },
+  {
+    "text": "99.9% of climate studies agree: burning fossil fuels drives climate change",
+    "topic": "Climate Change",
+    "info": true,
+    "length": 11,
+    "code": "AT3"
+  },
+  {
+    "text": "Rising temperatures threaten collapse of Atlantic Ocean current",
+    "topic": "Climate Change",
+    "info": true,
+    "length": 8,
+    "code": "AT4"
+  },
+  {
+    "text": "Average ocean temperatures have surged in past years",
+    "topic": "Climate Change",
+    "info": true,
+    "length": 8,
+    "code": "AT5"
+  },
+  {
+    "text": "Record-breaking high temperatures increase risk of droughts globally",
+    "topic": "Climate Change",
+    "info": true,
+    "length": 8,
+    "code": "AT6"
+  },
+  {
+    "text": "Increasing average temperatures set to amplify flood risks globally",
+    "topic": "Climate Change",
+    "info": true,
+    "length": 9,
+    "code": "AT7"
+  },
+  {
+    "text": "Global temperatures driven by natural weather cycles, not carbon emissions",
+    "topic": "Climate Change",
+    "info": false,
+    "length": 10,
+    "code": "AF1"
+  },
+  {
+    "text": "Glacier growth of up to 9 percent observed in Antarctica",
+    "topic": "Climate Change",
+    "info": false,
+    "length": 10,
+    "code": "AF2"
+  },
+  {
+    "text": "Climate trends caused by shifting ocean currents, unrelated to human activity",
+    "topic": "Climate Change",
+    "info": false,
+    "length": 11,
+    "code": "AF3"
+  },
+  {
+    "text": "Average number of global wildfires gradually decreasing in recent years",
+    "topic": "Climate Change",
+    "info": false,
+    "length": 10,
+    "code": "AF4"
+  },
+  {
+    "text": "Human activity not responsible for extreme weather events",
+    "topic": "Climate Change",
+    "info": false,
+    "length": 8,
+    "code": "AF5"
+  },
+  {
+    "text": "Rising global temperatures caused by changes in solar activity, not fossil fuels",
+    "topic": "Climate Change",
+    "info": false,
+    "length": 12,
+    "code": "AF6"
+  },
+  {
+    "text": "Carbon emissions proven to have little impact on climate overall",
+    "topic": "Climate Change",
+    "info": false,
+    "length": 11,
+    "code": "AF7"
+  },
+  {
+    "text": "COVID-19 vaccine boosters show stronger defense against Omicron variants",
+    "topic": "Vaccination",
+    "info": true,
+    "length": 9,
+    "code": "BT1"
+  },
+  {
+    "text": "Single dose of COVID-19 vaccine reduces risk of Long COVID",
+    "topic": "Vaccination",
+    "info": true,
+    "length": 10,
+    "code": "BT2"
+  },
+  {
+    "text": "COVID-19 vaccination prevents severe illness effectively",
+    "topic": "Vaccination",
+    "info": true,
+    "length": 6,
+    "code": "BT3"
+  },
+  {
+    "text": "COVID-19 vaccination during pregnancy: no negative effects on newborns",
+    "topic": "Vaccination",
+    "info": true,
+    "length": 9,
+    "code": "BT4"
+  },
+  {
+    "text": "Overwhelming majority of US doctors are fully vaccinated against COVID-19",
+    "topic": "Vaccination",
+    "info": true,
+    "length": 10,
+    "code": "BT5"
+  },
+  {
+    "text": "COVID-19 vaccination increases immunity significantly",
+    "topic": "Vaccination",
+    "info": true,
+    "length": 5,
+    "code": "BT6"
+  },
+  {
+    "text": "Hospitalization rates much lower among those vaccinated against COVID-19",
+    "topic": "Vaccination",
+    "info": true,
+    "length": 9,
+    "code": "BT7"
+  },
+  {
+    "text": "Lack of medical consensus: doctors divided on COVID-19 safety",
+    "topic": "Vaccination",
+    "info": false,
+    "length": 9,
+    "code": "BF1"
+  },
+  {
+    "text": "Increase in reported severe COVID-19 vaccine side-effects",
+    "topic": "Vaccination",
+    "info": false,
+    "length": 8,
+    "code": "BF2"
+  },
+  {
+    "text": "COVID-19 vaccination linked to higher rates of infertility",
+    "topic": "Vaccination",
+    "info": false,
+    "length": 8,
+    "code": "BF3"
+  },
+  {
+    "text": "Natural infection as effective against COVID-19 as vaccine",
+    "topic": "Vaccination",
+    "info": false,
+    "length": 8,
+    "code": "BF4"
+  },
+  {
+    "text": "COVID-19 vaccines may alter patients' DNA",
+    "topic": "Vaccination",
+    "info": false,
+    "length": 6,
+    "code": "BF5"
+  },
+  {
+    "text": "COVID-19 vaccination may lead to long-term health problems",
+    "topic": "Vaccination",
+    "info": false,
+    "length": 8,
+    "code": "BF6"
+  },
+  {
+    "text": "Reported death rates higher among people vaccinated against COVID-19",
+    "topic": "Vaccination",
+    "info": false,
+    "length": 9,
+    "code": "BF7"
+  },
+  {
+    "text": "New GMO soy beans have potential to enhance global food security",
+    "topic": "GMO",
+    "info": true,
+    "length": 11,
+    "code": "CT1"
+  },
+  {
+    "text": "GMO crops generally safe for the environment",
+    "topic": "GMO",
+    "info": true,
+    "length": 7,
+    "code": "CT2"
+  },
+  {
+    "text": "No long-term negative health effects from GMO food consumption",
+    "topic": "GMO",
+    "info": true,
+    "length": 9,
+    "code": "CT3"
+  },
+  {
+    "text": "Animal studies support safety of GMO crops for consumption",
+    "topic": "GMO",
+    "info": true,
+    "length": 9,
+    "code": "CT4"
+  },
+  {
+    "text": "Scientific consensus indicates GMO foods are safe",
+    "topic": "GMO",
+    "info": true,
+    "length": 7,
+    "code": "CT5"
+  },
+  {
+    "text": "GMO foods shown to be safe for human consumption",
+    "topic": "GMO",
+    "info": true,
+    "length": 9,
+    "code": "CT6"
+  },
+  {
+    "text": "GMO foods pass rigorous regulatory review",
+    "topic": "GMO",
+    "info": true,
+    "length": 6,
+    "code": "CT7"
+  },
+  {
+    "text": "Doubts emerge over GMO foods' safety amid long-term health risks",
+    "topic": "GMO",
+    "info": false,
+    "length": 10,
+    "code": "CF1"
+  },
+  {
+    "text": "Allergic reactions reported following GMO food consumption",
+    "topic": "GMO",
+    "info": false,
+    "length": 8,
+    "code": "CF2"
+  },
+  {
+    "text": "Nutritional value of GMO foods lower compared to natural foods",
+    "topic": "GMO",
+    "info": false,
+    "length": 10,
+    "code": "CF3"
+  },
+  {
+    "text": "Planting GMO crops risks harm to ecosystems worldwide",
+    "topic": "GMO",
+    "info": false,
+    "length": 8,
+    "code": "CF4"
+  },
+  {
+    "text": "Consuming GMO foods shown to affect human DNA",
+    "topic": "GMO",
+    "info": false,
+    "length": 8,
+    "code": "CF5"
+  },
+  {
+    "text": "Regular GMO food consumption leads to hormonal disruptions",
+    "topic": "GMO",
+    "info": false,
+    "length": 8,
+    "code": "CF6"
+  },
+  {
+    "text": "Regular consumption of GMO foods weakens immune system",
+    "topic": "GMO",
+    "info": false,
+    "length": 8,
+    "code": "CF7"
+  },
+  {
+    "text": "5G's radio frequency fields do not cause health hazards",
+    "topic": "5G",
+    "info": true,
+    "length": 9,
+    "code": "DT1"
+  },
+  {
+    "text": "No scientific evidence of health risks from 5G radiation exposure",
+    "topic": "5G",
+    "info": true,
+    "length": 10,
+    "code": "DT2"
+  },
+  {
+    "text": "5G not causally linked to adverse health effects",
+    "topic": "5G",
+    "info": true,
+    "length": 8,
+    "code": "DT3"
+  },
+  {
+    "text": "Consensus: 5G radiation within guidelines poses no health threat",
+    "topic": "5G",
+    "info": true,
+    "length": 10,
+    "code": "DT4"
+  },
+  {
+    "text": "No public health risks from 5G with exposure within international guidelines",
+    "topic": "5G",
+    "info": true,
+    "length": 11,
+    "code": "DT5"
+  },
+  {
+    "text": "5G networks do not have 'enormous impact' on immune system",
+    "topic": "5G",
+    "info": true,
+    "length": 10,
+    "code": "DT6"
+  },
+  {
+    "text": "No harmful effects anticipated with rollout of 5G",
+    "topic": "5G",
+    "info": true,
+    "length": 8,
+    "code": "DT7"
+  },
+  {
+    "text": "5G technology linked with increased cancer risk",
+    "topic": "5G",
+    "info": false,
+    "length": 7,
+    "code": "DF1"
+  },
+  {
+    "text": "5G radiation approaching harmful levels globally",
+    "topic": "5G",
+    "info": false,
+    "length": 6,
+    "code": "DF2"
+  },
+  {
+    "text": "Surge in reports of headaches after 5G launch",
+    "topic": "5G",
+    "info": false,
+    "length": 8,
+    "code": "DF3"
+  },
+  {
+    "text": "5G increases COVID-19 spread by weakening immune system",
+    "topic": "5G",
+    "info": false,
+    "length": 8,
+    "code": "DF4"
+  },
+  {
+    "text": "Call for stricter 5G rules after discovery of new health risks",
+    "topic": "5G",
+    "info": false,
+    "length": 11,
+    "code": "DF5"
+  },
+  {
+    "text": "New link found between 5G radiation and mental health problems",
+    "topic": "5G",
+    "info": false,
+    "length": 10,
+    "code": "DF6"
+  },
+  {
+    "text": "Potential neurological damage found following 5G exposure",
+    "topic": "5G",
+    "info": false,
+    "length": 7,
+    "code": "DF7"
+  },
+  {
+    "text": "No evidence of systemic voter fraud in 2020 election",
+    "topic": "Voter Fraud",
+    "info": true,
+    "length": 9,
+    "code": "ET1"
+  },
+  {
+    "text": "Officials confirm 2020 voting systems were in no way compromised",
+    "topic": "Voter Fraud",
+    "info": true,
+    "length": 10,
+    "code": "ET2"
+  },
+  {
+    "text": "Minimal voter fraud cases in 2020, no impact on final results",
+    "topic": "Voter Fraud",
+    "info": true,
+    "length": 11,
+    "code": "ET3"
+  },
+  {
+    "text": "Investigation into voting machines shows no evidence of tampering",
+    "topic": "Voter Fraud",
+    "info": true,
+    "length": 9,
+    "code": "ET4"
+  },
+  {
+    "text": "Officials from both parties certify 2020 election results",
+    "topic": "Voter Fraud",
+    "info": true,
+    "length": 8,
+    "code": "ET5"
+  },
+  {
+    "text": "Security of 2020 election systems validated by independent observers",
+    "topic": "Voter Fraud",
+    "info": true,
+    "length": 9,
+    "code": "ET6"
+  },
+  {
+    "text": "Courts have dismissed multiple lawsuits of alleged electoral fraud in 2020",
+    "topic": "Voter Fraud",
+    "info": true,
+    "length": 11,
+    "code": "ET7"
+  },
+  {
+    "text": "Audit raises concerns over delayed mail-in ballots in 2020 election",
+    "topic": "Voter Fraud",
+    "info": false,
+    "length": 10,
+    "code": "EF1"
+  },
+  {
+    "text": "2020 ballots cast under dead people's names confirm election irregularities",
+    "topic": "Voter Fraud",
+    "info": false,
+    "length": 10,
+    "code": "EF2"
+  },
+  {
+    "text": "Millions of illegal votes found in 2020, pointing to widespread fraud",
+    "topic": "Voter Fraud",
+    "info": false,
+    "length": 11,
+    "code": "EF3"
+  },
+  {
+    "text": "Reports of missing vote bags prove vote tampering during 2020 election",
+    "topic": "Voter Fraud",
+    "info": false,
+    "length": 11,
+    "code": "EF4"
+  },
+  {
+    "text": "Concerns about voting machine issues: votes flipped to different candidates",
+    "topic": "Voter Fraud",
+    "info": false,
+    "length": 10,
+    "code": "EF5"
+  },
+  {
+    "text": "Numerous unverified signatures detected on mail-in ballots in 2020",
+    "topic": "Voter Fraud",
+    "info": false,
+    "length": 9,
+    "code": "EF6"
+  },
+  {
+    "text": "Voter registration errors cast doubt on integrity of 2020 election",
+    "topic": "Voter Fraud",
+    "info": false,
+    "length": 10,
+    "code": "EF7"
+  }
+]
