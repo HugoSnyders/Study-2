@@ -2,88 +2,98 @@
 <html>
 
 <head>
-    <title>Study 2</title>
-    <script src="https://unpkg.com/jspsych@7.3.3"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.2"></script>
-    <link href="https://unpkg.com/jspsych@7.3.3/css/jspsych.css" rel="stylesheet" type="text/css" />
-    <script src="plugin-html-slider-response.js"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-instructions@1.1.3"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-survey-likert@1.1.3"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.2"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.3"></script>
-    <script src="stimuli4.js"></script>
-    <style>
-        .jspsych-display-element {
-            font-size: 23px;
-        }
+  <title>Study 2</title>
+  <script src="https://unpkg.com/jspsych@7.3.3"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.2"></script>
+  <link href="https://unpkg.com/jspsych@7.3.3/css/jspsych.css" rel="stylesheet" type="text/css" />
+  <script src="plugin-html-slider-response.js"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-instructions@1.1.3"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-likert@1.1.3"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.2"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.3"></script>
+  <script src="stimuli4.js"></script>
+  <style>
+    .jspsych-display-element {
+      font-size: 23px;
+    }
 
-        p {
-            margin-bottom: 20px;
-        }
+    p {
+      margin-bottom: 20px;
+    }
 
-        .stimulus-container {
-            width: 1000px;
-        }
+    .stimulus-container {
+      width: 1000px;
+    }
 
-        .headline-text {
-            margin-left: 20px;
-        }
+    .headline-text {
+      margin-left: 20px;
+    }
 
-        .headline-image {
-            width: 40%;
-            height: 40%;
-            margin-top: 60px;
-        }
+    .headline-image {
+      width: 40%;
+      height: 40%;
+      margin-top: 60px;
+    }
 
-        h2 {
-            font-weight: bold;
-        }
+    h2 {
+      font-weight: bold;
+    }
 
-        .consent {
-            width: 60%;
-            margin: 0 auto;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-size: 1em;
-            text-align: left;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
+    .consent {
+      width: 60%;
+      margin: 0 auto;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      font-size: 1em;
+      text-align: left;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
 
-        a {
-            color: blue;
-            /* Make links blue */
-            text-decoration: underline;
-            /* Underline links for visibility */
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
+    a {
+      color: blue;
+      /* Make links blue */
+      text-decoration: underline;
+      /* Underline links for visibility */
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
 
-        .right-aligned-text {
-            text-align: right;
-            margin-right: 80px;
-            /* Adjust if necessary to remove default margin */
-        }
-    </style>
+    .right-aligned-text {
+      text-align: right;
+      margin-right: 80px;
+      /* Adjust if necessary to remove default margin */
+    }
+  </style>
 </head>
 
 <body></body>
 <script>
-    /* initialize jsPsych */
-    var jsPsych = initJsPsych();
+  /* initialize jsPsych */
+  var jsPsych = initJsPsych();
 
-    /* create timeline */
-    var timeline = [];
+  /* create timeline */
+  var timeline = [];
 
-    /* preload images for instrucions */
-    var preload = {
-        type: jsPsychPreload,
-        images: ["instructions-keys.png", "instructions-buttons.png"],
-    };
+  /* preload images for instrucions */
+  var preload = {
+    type: jsPsychPreload,
+    images: [
+      "instructions-keys.png",
+      "instructions-buttons.png",
+      "CNN.png",
+      "Fox.png",
+      "NBC.png",
+      "ABC.png",
+      "CBS.png",
+      "MSNBC.png",
+      "NYT.png"
+    ]
+  };
 
-    var check_consent = false
+  var check_consent = false
 
-    var consent = {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `<div class="consent"
+  var consent = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `<div class="consent"
       <h2>Welcome! Please read the following consent form carefully.</h2>
       <p>
         In this scientific study we are interested in how people process and
@@ -236,568 +246,609 @@
         proceed.
       </p>
     </div>`,
-        choices: ['I do not consent', 'Begin study'],
-        on_load: function () {
-            document.getElementById("consent_checkbox").addEventListener("change", function () {
-                if (this.checked) {
-                    check_consent = true
-                    // Perform action when checked
-                } else {
-                    check_consent = false
-                    // Perform action when unchecked
-                }
-            });
+    choices: ['I do not consent', 'Begin study'],
+    on_load: function () {
+      document.getElementById("consent_checkbox").addEventListener("change", function () {
+        if (this.checked) {
+          check_consent = true
+          // Perform action when checked
+        } else {
+          check_consent = false
+          // Perform action when unchecked
         }
-    };
+      });
+    }
+  };
 
-    var check_consent_procedure = {
-        timeline: [consent],
-        loop_function: function (data) {
-            if (data.values()[0].response === 1 && !check_consent) {
-                alert("Please check the box to consent before starting the experiment."); // Provide immediate feedback
-                return true; // continue looping
-            } else {
-                return false; // exit loop
-            }
-        }
-    };
-    timeline.push(check_consent_procedure);
+  var check_consent_procedure = {
+    timeline: [consent],
+    loop_function: function (data) {
+      if (data.values()[0].response === 1 && !check_consent) {
+        alert("Please check the box to consent before starting the experiment."); // Provide immediate feedback
+        return true; // continue looping
+      } else {
+        return false; // exit loop
+      }
+    }
+  };
+  timeline.push(check_consent_procedure);
 
-    var no_consent = {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `<div class="consent">
+  var no_consent = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `<div class="consent">
         <p>
             You have indicated that you do not consent to participate in this study. You can now close this window
             and return your submission on Prolific by selecting the 'Cancel participation' button. <br>
         </p>
     </div>`,
-        choices: ['End experiment'],
-        on_finish: function (data) {
-            jsPsych.endExperiment()
-        }
+    choices: ['End experiment'],
+    on_finish: function (data) {
+      jsPsych.endExperiment()
     }
+  }
 
-    /* define welcome message trial */
-    var welcome = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: "Welcome to the experiment. Press any key to begin.",
-    };
-    //timeline.push(welcome);
+  /* define welcome message trial */
+  var welcome = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: "Welcome to the experiment. Press any key to begin.",
+  };
+  //timeline.push(welcome);
 
 
-    var if_node_noConsent = {
-        timeline: [no_consent],
-        conditional_function: function () {
-            if (jsPsych.data.get().last(1).values()[0].response == 0) {
-                return true
-            } else {
-                return false
-            }
-        }
-    }
-    timeline.push(if_node_noConsent)
-
-    var if_node_consent = {
-        timeline: [welcome],
-        conditional_function: function () {
-            if (jsPsych.data.get().last(1).values()[0].response == 1 && check_consent) {
-                return true
-            } else {
-                return false
-            }
-        }
-    }
-    timeline.push(if_node_consent)
-
-    /* var if_node_noCheck = {
-      timeline: [no_check, consent, if_node_consent, if_node_noConsent],
-      conditional_function: function () {
-        if (jsPsych.data.get().last(1).values()[0].response == 1 && check_consent == false) {
-          return true
-        } else {
-          return false
-        }
+  var if_node_noConsent = {
+    timeline: [no_consent],
+    conditional_function: function () {
+      if (jsPsych.data.get().last(1).values()[0].response == 0) {
+        return true
+      } else {
+        return false
       }
     }
-    timeline.push(if_node_noCheck) */
+  }
+  timeline.push(if_node_noConsent)
 
-    /* Prior belief measurement */
-    var prior_instructions = {
-        type: jsPsychInstructions,
-        pages: [
-            `<div style="width:750px;">
+  var if_node_consent = {
+    timeline: [welcome],
+    conditional_function: function () {
+      if (jsPsych.data.get().last(1).values()[0].response == 1 && check_consent) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+  timeline.push(if_node_consent)
+
+  /* var if_node_noCheck = {
+    timeline: [no_check, consent, if_node_consent, if_node_noConsent],
+    conditional_function: function () {
+      if (jsPsych.data.get().last(1).values()[0].response == 1 && check_consent == false) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+  timeline.push(if_node_noCheck) */
+
+  /* Prior belief measurement */
+  var prior_instructions = {
+    type: jsPsychInstructions,
+    pages: [
+      `<div style="width:750px;">
         <p>You will first be shown five statements. For each statement you will be asked to indicate to what extent you agree or disagree with that statement.</p>
         </div>`],
-        show_clickable_nav: true,
-    };
-    timeline.push(prior_instructions);
+    show_clickable_nav: true,
+  };
+  timeline.push(prior_instructions);
 
-    var priors = []
+  var priors = []
 
-    var prior1 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
+  var prior1 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
         <p>Human activity causes climate change</p>
         </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Disagree", " ", "100% Agree"],
-        on_finish: function () {
-            priors.push(jsPsych.data.get().last().values()[0].response)
-        }
-    };
-    timeline.push(prior1);
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Disagree", " ", "100% Agree"],
+    on_finish: function () {
+      priors.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(prior1);
 
 
-    var prior2 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
+  var prior2 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
         <p>It is safe to get vaccinated against Covid-19</p>
         </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Disagree", " ", "100% Agree"],
-        on_finish: function () {
-            priors.push(jsPsych.data.get().last().values()[0].response)
-        }
-    };
-    timeline.push(prior2);
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Disagree", " ", "100% Agree"],
+    on_finish: function () {
+      priors.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(prior2);
 
-    var prior3 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
+  var prior3 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
         <p> GMO foods (i.e. foods that are genetically modified) are harmful to human health</p>
         </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Disagree", " ", "100% Agree"],
-        on_finish: function () {
-            priors.push(jsPsych.data.get().last().values()[0].response)
-        }
-    };
-    timeline.push(prior3);
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Disagree", " ", "100% Agree"],
+    on_finish: function () {
+      priors.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(prior3);
 
-    var prior4 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
+  var prior4 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
         <p>Radiation from 5G technology is harmful to humans</p>
         </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Disagree", " ", "100% Agree"],
-        on_finish: function () {
-            priors.push(jsPsych.data.get().last().values()[0].response)
-        }
-    };
-    timeline.push(prior4);
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Disagree", " ", "100% Agree"],
+    on_finish: function () {
+      priors.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(prior4);
 
-    var prior5 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
+  var prior5 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
         <p>Widespread voter fraud took place during the US 2020 presidential election</p>
         </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Disagree", " ", "100% Agree"],
-        on_finish: function () {
-            priors.push(jsPsych.data.get().last().values()[0].response)
-        }
-    };
-    timeline.push(prior5);
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Disagree", " ", "100% Agree"],
+    on_finish: function () {
+      priors.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(prior5);
 
-    var source_cred = []
+  var source_cred = []
 
-    /* Source credibility measurement */
-    var source_instructions = {
-        type: jsPsychInstructions,
-        pages: [
-            `<div style="width:750px;">
+  var sources = ['NYT']
+
+  /* Source credibility measurement */
+  var source_instructions = {
+    type: jsPsychInstructions,
+    pages: [
+      `<div style="width:750px;">
         <p>Thank you. You will now be shown a series of news sources, and we ask that you indicate for each source how much you trust it.</p>
         </div>`],
-        show_clickable_nav: true,
-    };
-    timeline.push(source_instructions);
+    show_clickable_nav: true,
+  };
+  timeline.push(source_instructions);
 
-    var source1 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
-        <p>The New York Times</p>
-        </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Distrust", " ", "100% Trust"],
-        on_finish: function () {
-            source_cred.push(jsPsych.data.get().last().values()[0].response) // For sources we might not even need this
-        }
-    };
-    timeline.push(source1);
-
-    var source2 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
+  var source1 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
         <p>CNN</p>
         </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Distrust", " ", "100% Trust"],
-        on_finish: function () {
-            source_cred.push(jsPsych.data.get().last().values()[0].response) // For sources we might not even need this
-        }
-    };
-    timeline.push(source2);
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Distrust", " ", "100% Trust"],
+    on_finish: function () {
+      source_cred.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(source1);
 
-    var source3 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
-        <p>NBC</p>
-        </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Distrust", " ", "100% Trust"],
-        on_finish: function () {
-            source_cred.push(jsPsych.data.get().last().values()[0].response) // For sources we might not even need this
-        }
-    };
-    timeline.push(source3);
-
-    var source4 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
-        <p>ABC</p>
-        </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Distrust", " ", "100% Trust"],
-        on_finish: function () {
-            source_cred.push(jsPsych.data.get().last().values()[0].response) // For sources we might not even need this
-        }
-    };
-    timeline.push(source4);
-
-    var source5 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
-        <p>CBS</p>
-        </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Distrust", " ", "100% Trust"],
-        on_finish: function () {
-            source_cred.push(jsPsych.data.get().last().values()[0].response) // For sources we might not even need this
-        }
-    };
-    timeline.push(source5);
-
-    var source6 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
-        <p>The New York Post</p>
-        </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Distrust", " ", "100% Trust"],
-        on_finish: function () {
-            source_cred.push(jsPsych.data.get().last().values()[0].response) // For sources we might not even need this
-        }
-    };
-    timeline.push(source6);
-
-    var source7 = {
-        type: jsPsychHtmlSliderResponse,
-        stimulus: `<div style="width:500px;">
+  var source2 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
         <p>Fox News</p>
         </div>`,
-        min: -100,
-        max: 100,
-        slider_start: 0,
-        slider_number: true,
-        require_movement: true,
-        labels: ["100% Distrust", " ", "100% Trust"],
-        on_finish: function () {
-            source_cred.push(jsPsych.data.get().last().values()[0].response) // For sources we might not even need this
-        }
-    };
-    timeline.push(source7);
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Distrust", " ", "100% Trust"],
+    on_finish: function () {
+      source_cred.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(source2);
 
-    /* First block of instructions */
-    var instructions_1 = {
-        type: jsPsychInstructions,
-        pages: [
-            `<p>Thank you. We will now provide you with instructions for the experimental task.</p>`,
-            `<p>You will be shown a series of news headlines, and we will ask you <br> to indicate whether you think the content of each headline is <b>true</b> or <b>false.</b>
+  var source3 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
+        <p>NBC news</p>
+        </div>`,
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Distrust", " ", "100% Trust"],
+    on_finish: function () {
+      source_cred.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(source3);
+
+  var source4 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
+        <p>ABC news</p>
+        </div>`,
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Distrust", " ", "100% Trust"],
+    on_finish: function () {
+      source_cred.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(source4);
+
+  var source5 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
+        <p>CBS news</p>
+        </div>`,
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Distrust", " ", "100% Trust"],
+    on_finish: function () {
+      source_cred.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(source5);
+
+  var source6 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
+        <p>MSNBC</p>
+        </div>`,
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Distrust", " ", "100% Trust"],
+    on_finish: function () {
+      source_cred.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(source6);
+
+  var source7 = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:500px;">
+        <p>New York Times</p>
+        </div>`,
+    min: -100,
+    max: 100,
+    slider_start: 0,
+    slider_number: true,
+    require_movement: true,
+    labels: ["100% Distrust", " ", "100% Trust"],
+    on_finish: function () {
+      source_cred.push(jsPsych.data.get().last().values()[0].response)
+    }
+  };
+  timeline.push(source7);
+
+
+  // This function determines the highest and lowest perceived credibility values and assigns them to a dictionary 
+  function getKeysWithExtremeValues(obj) {
+    return Object.keys(obj).reduce((result, key) => {
+      if (!result.highest.value || obj[key] > result.highest.value) {
+        result.highest = { value: obj[key], keys: [key] };
+      } else if (obj[key] === result.highest.value) {
+        result.highest.keys.push(key);
+      }
+
+      if (!result.lowest.value || obj[key] < result.lowest.value) {
+        result.lowest = { value: obj[key], keys: [key] };
+      } else if (obj[key] === result.lowest.value) {
+        result.lowest.keys.push(key);
+      }
+
+      return result;
+    }, { highest: { value: null, keys: [] }, lowest: { value: null, keys: [] } });
+  }
+
+  var source_cred_dict, extremeCredSources = {}
+
+  /* First block of instructions */
+  var instructions_1 = {
+    type: jsPsychInstructions,
+    pages: [
+      `<p>Thank you. We will now provide you with instructions for the experimental task.</p>`,
+      `<p>You will be shown a series of news headlines, and we will ask you <br> to indicate whether you think the content of each headline is <b>true</b> or <b>false.</b>
         <br> <br> This is not a test with right or wrong answers. We just want to know what <i>you</i> think <br> about each headline. </p>`,
-            `<img src='instructions-keys.png' style='width:70%;height:70%;margin-left:20px'></img>`,
-            `<p>Note: for each choice you will have 8 seconds to make your decision. <br> <br> We recommend you keep your index fingers on the 'f' and 'j' keys.</p>`,
-            `<p>We will first have you do two practice trials to help familiarize <br> you with how the experiment works. <br> <br> Press 'Next' to continue.</p>`,
-        ],
-        show_clickable_nav: true,
-    };
-    timeline.push(instructions_1);
+      `<img src='instructions-keys.png' style='width:70%;height:70%;margin-left:20px'></img>`,
+      `<p>Note: for each choice you will have 8 seconds to make your decision. <br> <br> We recommend you keep your index fingers on the 'f' and 'j' keys.</p>`,
+      `<p>We will first have you do two practice trials to help familiarize <br> you with how the experiment works. <br> <br> Press 'Next' to continue.</p>`,
+    ],
+    show_clickable_nav: true,
+    on_start: function () {
+      source_cred_dict = {
+        "CNN": source_cred[0],
+        "Fox": source_cred[1],
+        "NBC": source_cred[2],
+        "ABC": source_cred[3],
+        "CBS": source_cred[4],
+        "MSNBC": source_cred[5],
+        "NYT": source_cred[6]
+      }
 
-    var sources = [
-        '- New York times',
-        '- CNN',
-        '- NBC News',
-        '- ABC News',
-        '- CBS News',
-        '- New York Post',
-        '- Fox news'
-    ]
+      extremeCredSources = getKeysWithExtremeValues(source_cred_dict);
+    }
+  };
+  timeline.push(instructions_1);
 
-    /* Create blank screen to place after each trial */
-    var blank = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div style="font-size:60px;"> </div>',
-        choices: "NO_KEYS",
-        trial_duration: 800,
-        data: {
-            task: "blank",
-        },
-    };
 
-    /* Create fixation crosses */
-    var fixation = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div style="font-size:60px; position: relative; bottom: 100px;">+</div>',
-        choices: "NO_KEYS",
-        trial_duration: 1000,
-        data: {
-            task: "fixation",
-        },
-    };
+  var source_image_dict = {
+    "CNN.png": "CNN",
+    "Fox.png": "Fox",
+    "NBC.png": "NBC",
+    "ABC.png": "ABC",
+    "CBS.png": "CBS",
+    "MSNBC.png": "MSNBC",
+    "NYT.png": "NYT"
+  }
 
-    /* Create practice trial stimuli */
-    var practice_stimuli = [
-        {
-            text: "1 cup of coffee a day shown to increase risk of cardiovascular disease",
-            info: false
-        },
-        {
-            text: "Kansas City beats San Fransisco in overtime at the 2024 Super Bowl",
-            info: true
-        },
-    ]
 
-    var practice_stimuli_randomized = jsPsych.randomization.repeat(practice_stimuli, 1); // Make sure the order in which these are shown is randomized
-    var practice_sources_randomized = jsPsych.randomization.repeat(sources, 1);
 
-    timeline.push(fixation);
 
-    /* For loop to add practice trials to timeline */
-    for (let i = 0; i < practice_stimuli.length; i++) {
-        var practice_trial = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus:
-                `<div class="stimulus-container">` +
-                `<p class="headline-text">` +
-                practice_stimuli_randomized[i].text +
-                `</p>` +
-                `<p style = "text-align: right; margin-right: 120px;">` + 
-                practice_sources_randomized[i] +
-                `</p>` +
-                `<img src="instructions-buttons.png" class="headline-image">` +
-                `</div>`,
-            choices: ["f", "j"],
-            trial_duration: 8000,
-            data: {
-                text: practice_stimuli_randomized[i].text,
-                info: practice_stimuli_randomized[i].info,
-                source: practice_sources_randomized[i],
-            },
-        }
-        timeline.push(practice_trial);
-        timeline.push(blank);
+  /* Create blank screen to place after each trial */
+  var blank = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<div style="font-size:60px;"> </div>',
+    choices: "NO_KEYS",
+    trial_duration: 800,
+    data: {
+      task: "blank",
+    },
+  };
+
+  /* Create fixation crosses */
+  var fixation = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<div style="font-size:60px; position: relative; bottom: 100px;">+</div>',
+    choices: "NO_KEYS",
+    trial_duration: 1000,
+    data: {
+      task: "fixation",
+    },
+  };
+
+  /* Create practice trial stimuli */
+  var practice_stimuli = [
+    {
+      text: "1 cup of coffee a day shown to increase risk of cardiovascular disease",
+      info: false
+    },
+    {
+      text: "Kansas City beats San Fransisco in overtime at the 2024 Super Bowl",
+      info: true
+    },
+  ]
+
+  var practice_stimuli_randomized = jsPsych.randomization.repeat(practice_stimuli, 1); // Make sure the order in which these are shown is randomized
+  var practice_sources_randomized = jsPsych.randomization.repeat(sources, 1);
+
+  timeline.push(fixation);
+
+  /* For loop to add practice trials to timeline */
+  for (let i = 0; i < practice_stimuli.length; i++) {
+    var practice_trial = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus:
+        `<div class="stimulus-container">` +
+        `<p class="headline-text">` +
+        practice_stimuli_randomized[i].text +
+        `</p>` +
+        `<p style = "text-align: right; margin-right: 120px;">` +
+        practice_sources_randomized[i] +
+        `</p>` +
+        `<img src="instructions-buttons.png" class="headline-image">` +
+        `</div>`,
+      choices: ["f", "j"],
+      trial_duration: 8000,
+      data: {
+        text: practice_stimuli_randomized[i].text,
+        info: practice_stimuli_randomized[i].info,
+        source: practice_sources_randomized[i],
+      },
+    }
+    timeline.push(practice_trial);
+    timeline.push(blank);
+  }
+
+  /* Final block of instructions */
+  var instructions_2 = {
+    type: jsPsychInstructions,
+    pages: [
+      `<p>Thank you. We can now begin the experiment.</p>`,
+      `<p>Whenever you're ready to start the experiment, press 'Next'.</p>`,
+    ],
+    show_clickable_nav: true,
+  };
+  timeline.push(instructions_2);
+
+
+  timeline.push(fixation);
+
+  /* Create a randomply sampled array of headlines to loop through */
+  var headlines = jsPsych.randomization.sampleWithoutReplacement(
+    headline_stimuli,
+    headline_stimuli.length
+  );
+
+  /* This function will later be used to set the congruence of a
+   headline depending on the prior for the topic at hand */
+  function congruence_function(topic_nr, info, flip) {
+    // Determine prior based on topic number
+    prior = priors[topic_nr]
+    // the separation based on 'flip' is to account for the way the measurement questions are formulated
+    if (flip == false) {
+      if ((prior > 0 && info == true) || (prior < 0 && info == false)) {
+        return "Congruent";
+      } else if (prior == 0) {
+        return "Neutral";
+      } else {
+        return "Incongruent";
+      }
+    } else {
+      if ((prior > 0 && info == true) || (prior < 0 && info == false)) {
+        return "Incongruent";
+      } else if (prior == 0) {
+        return "Neutral";
+      } else {
+        return "Congruent";
+      }
+    }
+  }
+
+  // Function to shuffle an array
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  // Create a dictionary to track sources used for each topic
+  var topicSources = {};
+
+  headline_stimuli.forEach(function (item) {
+    if (!topicSources[item.topic]) {
+      topicSources[item.topic] = {
+        true: [],
+        false: []
+      };
+      // Duplicate the sources array to ensure each source appears once for true and once for false headlines
+      var doubledSources = sources.concat(sources);
+      shuffle(doubledSources);
+      topicSources[item.topic].true = doubledSources.slice(0, sources.length);
+      topicSources[item.topic].false = doubledSources.slice(sources.length);
     }
 
-    /* Final block of instructions */
-    var instructions_2 = {
-        type: jsPsychInstructions,
-        pages: [
-            `<p>Thank you. We can now begin the experiment.</p>`,
-            `<p>Whenever you're ready to start the experiment, press 'Next'.</p>`,
-        ],
-        show_clickable_nav: true,
-    };
-    timeline.push(instructions_2);
+    // Assign the next available source to the item based on its 'info' property
+    if (item.info) {
+      item.source = topicSources[item.topic].true.pop();
+    } else {
+      item.source = topicSources[item.topic].false.pop();
+    }
+  });
 
-
-    timeline.push(fixation);
-
-    /* Create a randomply sampled array of headlines to loop through */
-    var headlines = jsPsych.randomization.sampleWithoutReplacement(
-        headline_stimuli,
-        headline_stimuli.length
-    );
-
-    /* This function will later be used to set the congruence of a
-     headline depending on the prior for the topic at hand */
-    function congruence_function(topic_nr, info, flip) {
-        // Determine prior based on topic number
-        prior = priors[topic_nr]
-        // the separation based on 'flip' is to account for the way the measurement questions are formulated
-        if (flip == false) {
-            if ((prior > 0 && info == true) || (prior < 0 && info == false)) {
-                return "Congruent";
-            } else if (prior == 0) {
-                return "Neutral";
-            } else {
-                return "Incongruent";
-            }
+  /* For loop to add stimuli to timeline by going through headline_stimuli */
+  for (let i = 0; i < headline_stimuli.length; i++) {
+    var headline_trial = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus:
+        `<div class="stimulus-container">` +
+        `<p class="headline-text">` +
+        headlines[i].text +
+        `</p>` +
+        `<p style = "text-align: right; margin-right:` + String(8000 * (1 / headlines[i].characters)) + `px;">` + // This is to try and have the margin correspond to the character count of the headline in a way that looks somewhat natural
+        headlines[i].source +
+        `</p>` +
+        `<img src="instructions-buttons.png" class="headline-image">` +
+        `</div>`,
+      choices: ["f", "j"],
+      trial_duration: 8000,
+      data: {
+        topic: headlines[i].topic,
+        code: headlines[i].code,
+        info: headlines[i].info,
+        length: headlines[i].length,
+        trial: i + 1, // check to make sure this works
+      },
+      /* The following function retrieves the participant's prior depending on the topic,
+      and compares that to the truth of the stimulus to determine its congruence for the participant */
+      on_finish: function (data) {
+        info = headlines[i].info;
+        flip = headlines[i].flipped;
+        if (headlines[i].topic == "Climate Change") {
+          data.congruence = congruence_function(0, info, flip);
+        } else if (headlines[i].topic == "Vaccination") {
+          data.congruence = congruence_function(1, info, flip);
+        } else if (headlines[i].topic == "GMO") {
+          data.congruence = congruence_function(2, info, flip);
+        } else if (headlines[i].topic == "5G") {
+          data.congruence = congruence_function(3, info, flip);
         } else {
-            if ((prior > 0 && info == true) || (prior < 0 && info == false)) {
-                return "Incongruent";
-            } else if (prior == 0) {
-                return "Neutral";
-            } else {
-                return "Congruent";
-            }
+          data.congruence = congruence_function(4, info, flip); // this might change depending on how the measurement question is formulated
         }
-    }
+      },
+    };
+    timeline.push(headline_trial);
+    timeline.push(blank);
+  }
 
-    // Function to shuffle an array
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
-    // Create a dictionary to track sources used for each topic
-    var topicSources = {};
-
-    headline_stimuli.forEach(function (item) {
-        if (!topicSources[item.topic]) {
-            topicSources[item.topic] = {
-                true: [],
-                false: []
-            };
-            // Duplicate the sources array to ensure each source appears once for true and once for false headlines
-            var doubledSources = sources.concat(sources);
-            shuffle(doubledSources);
-            topicSources[item.topic].true = doubledSources.slice(0, sources.length);
-            topicSources[item.topic].false = doubledSources.slice(sources.length);
-        }
-
-        // Assign the next available source to the item based on its 'info' property
-        if (item.info) {
-            item.source = topicSources[item.topic].true.pop();
-        } else {
-            item.source = topicSources[item.topic].false.pop();
-        }
-    });
-
-    /* For loop to add stimuli to timeline by going through headline_stimuli */
-    for (let i = 0; i < headline_stimuli.length; i++) {
-        var headline_trial = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus:
-                `<div class="stimulus-container">` +
-                `<p class="headline-text">` +
-                headlines[i].text +
-                `</p>` +
-                `<p style = "text-align: right; margin-right:` + String(8000 * (1 / headlines[i].characters)) + `px;">` + // This is to try and have the margin correspond to the character count of the headline in a way that looks somewhat natural
-                headlines[i].source +
-                `</p>` +
-                `<img src="instructions-buttons.png" class="headline-image">` +
-                `</div>`,
-            choices: ["f", "j"],
-            trial_duration: 8000,
-            data: {
-                topic: headlines[i].topic,
-                code: headlines[i].code,
-                info: headlines[i].info,
-                length: headlines[i].length,
-                trial: i + 1, // check to make sure this works
-            },
-            /* The following function retrieves the participant's prior depending on the topic,
-            and compares that to the truth of the stimulus to determine its congruence for the participant */
-            on_finish: function (data) {
-                info = headlines[i].info;
-                flip = headlines[i].flipped;
-                if (headlines[i].topic == "Climate Change") {
-                    data.congruence = congruence_function(0, info, flip);
-                } else if (headlines[i].topic == "Vaccination") {
-                    data.congruence = congruence_function(1, info, flip);
-                } else if (headlines[i].topic == "GMO") {
-                    data.congruence = congruence_function(2, info, flip);
-                } else if (headlines[i].topic == "5G") {
-                    data.congruence = congruence_function(3, info, flip);
-                } else {
-                    data.congruence = congruence_function(4, info, flip); // this might change depending on how the measurement question is formulated
-                }
-            },
-        };
-        timeline.push(headline_trial);
-        timeline.push(blank);
-    }
-
-    /* Final block of instructions */
-    var instructions_3 = {
-        type: jsPsychInstructions,
-        pages: [
-            `<div style="width:800px;">
+  /* Final block of instructions */
+  var instructions_3 = {
+    type: jsPsychInstructions,
+    pages: [
+      `<div style="width:800px;">
       <p>Thank you for completing the experimental task. We will now ask you one final survey question regarding your
         political preferences, and after that you will be debriefed and provided with a Prolific completion code.</p>
         </div>`,
-        ],
-        show_clickable_nav: true,
-    };
-    timeline.push(instructions_3);
+    ],
+    show_clickable_nav: true,
+  };
+  timeline.push(instructions_3);
 
-    var pol_aff = {
-        type: jsPsychSurveyLikert,
-        questions: [
-            {
-                prompt:
-                    "Which of the following best describes your political affiliation?",
-                labels: [
-                    "Strongly Republican",
-                    "Moderately Republican",
-                    "Neutral",
-                    "Moderately Democrat",
-                    "Strongly Democrat",
-                ],
-            },
+  var pol_aff = {
+    type: jsPsychSurveyLikert,
+    questions: [
+      {
+        prompt:
+          "Which of the following best describes your political affiliation?",
+        labels: [
+          "Strongly Republican",
+          "Moderately Republican",
+          "Neutral",
+          "Moderately Democrat",
+          "Strongly Democrat",
         ],
-    };
-    timeline.push(pol_aff);
+      },
+    ],
+  };
+  timeline.push(pol_aff);
 
-    var debrief = {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `<div class="consent"
+  var debrief = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `<div class="consent"
     <h2>Debrief</h2>
       <p>
         Thank you for participating in this study. The aim of this study is to
@@ -994,25 +1045,25 @@
         >
       </p>
     </div>`,
-        choices: ['Next']
-    };
-    timeline.push(debrief);
+    choices: ['Next']
+  };
+  timeline.push(debrief);
 
-    /* Completion code */
-    var completion_code = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `<div style="width:800px;">
+  /* Completion code */
+  var completion_code = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `<div style="width:800px;">
             <p>Thank you for taking part in this experiment! You can click the link below to confirm your completion with Prolific:</p>
       <a target='_blank'
           href="https://app.prolific.com/submissions/complete?cc=C1F76V8S"
           >https://app.prolific.com/submissions/complete?cc=C1F76V8S</a
         ></div>`,
-        choices: "NO_KEYS"
-    };
-    timeline.push(completion_code);
+    choices: "NO_KEYS"
+  };
+  timeline.push(completion_code);
 
-    /* start the experiment */
-    jsPsych.run(timeline);
+  /* start the experiment */
+  jsPsych.run(timeline);
 </script>
 
 </html>
