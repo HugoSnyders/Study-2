@@ -564,8 +564,50 @@
   };
   timeline.push(source7);
 
+  function get_source_cred(obj) {
+    var values = Object.values(obj);
+    var sorted_values = [...values].sort((a, b) => a - b);
+    var median = (sorted_values[Math.floor((sorted_values.length - 1) / 2)] + sorted_values[Math.ceil((sorted_values.length - 1) / 2)]) / 2;
 
-  // This function determines the highest and lowest perceived credibility values and assigns them to a dictionary 
+    return Object.keys(obj).reduce((result, key) => {
+      // Highest and lowest logic (same as before)
+      if (!result.highest.value || obj[key] > result.highest.value) {
+        result.highest = { value: obj[key], keys: [key] };
+      } else if (obj[key] === result.highest.value) {
+        result.highest.keys.push(key);
+      }
+
+      if (!result.lowest.value || obj[key] < result.lowest.value) {
+        result.lowest = { value: obj[key], keys: [key] };
+      } else if (obj[key] === result.lowest.value) {
+        result.lowest.keys.push(key);
+      }
+
+      // Middle logic
+      if (!result.middle.value1 || Math.abs(obj[key] - median) < Math.abs(result.middle.value1 - median)) {
+        result.middle.value2 = result.middle.value1;
+        result.middle.keys2 = result.middle.keys1;
+        result.middle.value1 = obj[key];
+        result.middle.keys1 = [key];
+      } else if (obj[key] === result.middle.value1) {
+        result.middle.keys1.push(key);
+      } else if (!result.middle.value2 || Math.abs(obj[key] - median) < Math.abs(result.middle.value2 - median)) {
+        result.middle.value2 = obj[key];
+        result.middle.keys2 = [key];
+      } else if (obj[key] === result.middle.value2) {
+        result.middle.keys2.push(key);
+      }
+
+      return result;
+    }, {
+      highest: { value: null, keys: [] },
+      lowest: { value: null, keys: [] },
+      middle: { value1: null, keys1: [], value2: null, keys2: [] }
+    });
+  }
+
+
+  /* //This function determines the highest and lowest perceived credibility values and assigns them to a dictionary 
   function getKeysWithExtremeValues(obj) {
     return Object.keys(obj).reduce((result, key) => {
       if (!result.highest.value || obj[key] > result.highest.value) {
@@ -580,11 +622,25 @@
         result.lowest.keys.push(key);
       }
 
+      if (!result.middle.value1 || Math.abs(obj[key] - median) < Math.abs(result.middle.value1 - median)) {
+      result.middle.value2 = result.middle.value1;
+      result.middle.keys2 = result.middle.keys1;
+      result.middle.value1 = obj[key];
+      result.middle.keys1 = [key];
+    } else if (obj[key] === result.middle.value1) {
+      result.middle.keys1.push(key);
+    } else if (!result.middle.value2 || Math.abs(obj[key] - median) < Math.abs(result.middle.value2 - median)) {
+      result.middle.value2 = obj[key];
+      result.middle.keys2 = [key];
+    } else if (obj[key] === result.middle.value2) {
+      result.middle.keys2.push(key);
+    }
+
       return result;
     }, { highest: { value: null, keys: [] }, lowest: { value: null, keys: [] } });
-  }
+  } */
 
-  var source_cred_dict, extremeCredSources = {}
+  var source_cred_dict, extremes_cred_sources = {}
 
   /* First block of instructions */
   var instructions_1 = {
@@ -609,24 +665,21 @@
         "NYT": source_cred[6]
       }
 
-      extremeCredSources = getKeysWithExtremeValues(source_cred_dict);
+      extremes_cred_sources = get_source_cred(source_cred_dict);
     }
   };
   timeline.push(instructions_1);
 
 
   var source_image_dict = {
-    "CNN.png": "CNN",
-    "Fox.png": "Fox",
-    "NBC.png": "NBC",
-    "ABC.png": "ABC",
-    "CBS.png": "CBS",
-    "MSNBC.png": "MSNBC",
-    "NYT.png": "NYT"
+    "CNN": "CNN.png",
+    "Fox": "Fox.png",
+    "NBC": "NBC.png",
+    "ABC": "ABC.png",
+    "CBS": "CBS.png",
+    "MSNBC": "MSNBC.png",
+    "NYT": "NYT.png"
   }
-
-
-
 
   /* Create blank screen to place after each trial */
   var blank = {
@@ -654,16 +707,21 @@
   var practice_stimuli = [
     {
       text: "1 cup of coffee a day shown to increase risk of cardiovascular disease",
+      source_function: function () {
+        return extremes_cred_sources.middle.keys1[0]
+      },
       info: false
     },
     {
       text: "Kansas City beats San Fransisco in overtime at the 2024 Super Bowl",
+      source_function: function () {
+        return extremes_cred_sources.middle.keys2[0]
+      },
       info: true
     },
   ]
 
   var practice_stimuli_randomized = jsPsych.randomization.repeat(practice_stimuli, 1); // Make sure the order in which these are shown is randomized
-  var practice_sources_randomized = jsPsych.randomization.repeat(sources, 1);
 
   timeline.push(fixation);
 
@@ -671,41 +729,25 @@
   for (let i = 0; i < practice_stimuli.length; i++) {
     var practice_trial = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus:
-        `<div class="stimulus-container">` +
-        `<p class="headline-text">` +
-        practice_stimuli_randomized[i].text +
-        `</p>` +
-        `<p style = "text-align: right; margin-right: 120px;">` +
-        practice_sources_randomized[i] +
-        `</p>` +
-        `<img src="instructions-buttons.png" class="headline-image">` +
-        `</div>`,
+      stimulus: function () {
+        return `<div class="stimulus-container">
+        <p class="headline-text">${practice_stimuli_randomized[i].text}</p>
+        <p style="text-align: right; margin-right: 120px;">
+          ${practice_stimuli_randomized[i].source_function()}
+        </p>
+        <img src="instructions-buttons.png" class="headline-image">
+      </div>`;
+      },
       choices: ["f", "j"],
       trial_duration: 8000,
       data: {
         text: practice_stimuli_randomized[i].text,
         info: practice_stimuli_randomized[i].info,
-        source: practice_sources_randomized[i],
       },
     }
     timeline.push(practice_trial);
     timeline.push(blank);
   }
-
-  /* Final block of instructions */
-  var instructions_2 = {
-    type: jsPsychInstructions,
-    pages: [
-      `<p>Thank you. We can now begin the experiment.</p>`,
-      `<p>Whenever you're ready to start the experiment, press 'Next'.</p>`,
-    ],
-    show_clickable_nav: true,
-  };
-  timeline.push(instructions_2);
-
-
-  timeline.push(fixation);
 
   /* Create a randomply sampled array of headlines to loop through */
   var headlines = jsPsych.randomization.sampleWithoutReplacement(
@@ -738,18 +780,41 @@
     }
   }
 
-  // Function to shuffle an array
-  function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+  /* Final block of instructions */
+  var instructions_2 = {
+    type: jsPsychInstructions,
+    pages: [
+      `<p>Thank you. We can now begin the experiment.</p>`,
+      `<p>Whenever you're ready to start the experiment, press 'Next'.</p>`,
+    ],
+    show_clickable_nav: true,
+    on_start: function (data) {
+      for (let i = 0; i < headline_stimuli.length; i++) {
+        info = headlines[i].info;
+        flip = headlines[i].flipped;
+        if (headlines[i].topic == "Climate Change") {
+          headlines[i].congruence = congruence_function(0, info, flip);
+        } else if (headlines[i].topic == "Vaccination") {
+          headlines[i].congruence = congruence_function(1, info, flip);
+        } else if (headlines[i].topic == "GMO") {
+          headlines[i].congruence = congruence_function(2, info, flip);
+        } else if (headlines[i].topic == "5G") {
+          headlines[i].congruence = congruence_function(3, info, flip);
+        } else {
+          headlines[i].congruence = congruence_function(4, info, flip);
+        }
+      }
     }
-  }
+  };
+  timeline.push(instructions_2);
+
+
+  timeline.push(fixation);
 
   // Create a dictionary to track sources used for each topic
-  var topicSources = {};
+  //var topicSources = {};
 
-  headline_stimuli.forEach(function (item) {
+  /* headline_stimuli.forEach(function (item) {
     if (!topicSources[item.topic]) {
       topicSources[item.topic] = {
         true: [],
@@ -768,7 +833,7 @@
     } else {
       item.source = topicSources[item.topic].false.pop();
     }
-  });
+  });*/
 
   /* For loop to add stimuli to timeline by going through headline_stimuli */
   for (let i = 0; i < headline_stimuli.length; i++) {
@@ -778,9 +843,6 @@
         `<div class="stimulus-container">` +
         `<p class="headline-text">` +
         headlines[i].text +
-        `</p>` +
-        `<p style = "text-align: right; margin-right:` + String(8000 * (1 / headlines[i].characters)) + `px;">` + // This is to try and have the margin correspond to the character count of the headline in a way that looks somewhat natural
-        headlines[i].source +
         `</p>` +
         `<img src="instructions-buttons.png" class="headline-image">` +
         `</div>`,
@@ -793,23 +855,11 @@
         length: headlines[i].length,
         trial: i + 1, // check to make sure this works
       },
+      on_start: function (data) {
+      }
       /* The following function retrieves the participant's prior depending on the topic,
       and compares that to the truth of the stimulus to determine its congruence for the participant */
-      on_finish: function (data) {
-        info = headlines[i].info;
-        flip = headlines[i].flipped;
-        if (headlines[i].topic == "Climate Change") {
-          data.congruence = congruence_function(0, info, flip);
-        } else if (headlines[i].topic == "Vaccination") {
-          data.congruence = congruence_function(1, info, flip);
-        } else if (headlines[i].topic == "GMO") {
-          data.congruence = congruence_function(2, info, flip);
-        } else if (headlines[i].topic == "5G") {
-          data.congruence = congruence_function(3, info, flip);
-        } else {
-          data.congruence = congruence_function(4, info, flip); // this might change depending on how the measurement question is formulated
-        }
-      },
+
     };
     timeline.push(headline_trial);
     timeline.push(blank);
