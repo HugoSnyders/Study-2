@@ -789,7 +789,7 @@
     ],
     show_clickable_nav: true,
     on_start: function (data) {
-      for (let i = 0; i < headline_stimuli.length; i++) {
+      for (let i = 0; i < headlines.length; i++) {
         info = headlines[i].info;
         flip = headlines[i].flipped;
         if (headlines[i].topic == "Climate Change") {
@@ -812,36 +812,60 @@
       headlines.push(...headline_fillers)
 
       headlines = jsPsych.randomization.repeat(headlines, 1);
+    },
+    on_finish: function () {
+      /* This function makes sure that source assignments are randomized and counterbalanced across
+      topics and congruence conditions */
+      let topics = ["Climate Change", "Vaccination", "GMO", "5G", "Voter Fraud"];
+      let source_counts = {};
+      topics.forEach(topic => {
+        source_counts[topic] = {
+          congruent: { high: 0, low: 0 },
+          incongruent: { high: 0, low: 0 }
+        }; // this is to keep count of how many high and low credibility sources were assigned accross topics and conditions
+      });
+
+      let middle_sources = [...extremes_cred_sources.middle.keys1, ...extremes_cred_sources.middle.keys2]; // Combine middle sources into array
+      let middle_source_index = 0;
+
+      for (let i = 0; i < headlines.length; i++) {
+        let headline = headlines[i];
+        // This is specifically to assign the two middle sources to filler trials
+        if (headline.congruence === "filler") {
+          let source_name = middle_sources[middle_source_index % middle_sources.length]; // the modulo operation is to cycle through filler sources evenly
+          let credibility_value;
+          if (middle_source_index < extremes_cred_sources.middle.keys1.length) {
+            credibility_value = extremes_cred_sources.middle.value1;
+          } else {
+            credibility_value = extremes_cred_sources.middle.value2;
+          } // this is to make sure the right credibility value gets assigned to the source that's being used
+          headline.source = {
+            name: source_name,
+            credibility: "middle",
+            credibility_value: credibility_value
+          };
+          middle_source_index++;
+          // This is where sources get assigned to real trials
+        } else {
+          let topic_counts = source_counts[headline.topic];
+          let congruence = headline.congruence ? "congruent" : "incongruent";
+          let credibility = topic_counts[congruence].high <= topic_counts[congruence].low ? "highest" : "lowest"; // This is basically an if-then function that checks whether there are fewer or an equal number of high credibility sources compared to low
+          topic_counts[congruence][credibility === "highest" ? "high" : "low"]++; // this adds to add to the relevant counter for topic/congruence
+
+          let available_sources = extremes_cred_sources[credibility].keys;
+          let source_name = available_sources[Math.floor(Math.random() * available_sources.length)];
+          headline.source = {
+            name: source_name,
+            credibility: credibility,
+            credibility_value: extremes_cred_sources[credibility].value
+          };
+        }
+      }
     }
   };
   timeline.push(instructions_2);
 
-
   timeline.push(fixation);
-
-  // Create a dictionary to track sources used for each topic
-  //var topicSources = {};
-
-  /* headline_stimuli.forEach(function (item) {
-    if (!topicSources[item.topic]) {
-      topicSources[item.topic] = {
-        true: [],
-        false: []
-      };
-      // Duplicate the sources array to ensure each source appears once for true and once for false headlines
-      var doubledSources = sources.concat(sources);
-      shuffle(doubledSources);
-      topicSources[item.topic].true = doubledSources.slice(0, sources.length);
-      topicSources[item.topic].false = doubledSources.slice(sources.length);
-    }
-
-    // Assign the next available source to the item based on its 'info' property
-    if (item.info) {
-      item.source = topicSources[item.topic].true.pop();
-    } else {
-      item.source = topicSources[item.topic].false.pop();
-    }
-  });*/
 
   /* For loop to add stimuli to timeline by going through headline_stimuli */
   for (let i = 0; i < 100; i++) {
@@ -870,7 +894,6 @@
       }
       /* The following function retrieves the participant's prior depending on the topic,
       and compares that to the truth of the stimulus to determine its congruence for the participant */
-
     };
     timeline.push(headline_trial);
     timeline.push(blank);
