@@ -11,6 +11,7 @@
   <script src="https://unpkg.com/@jspsych/plugin-survey-likert@1.1.3"></script>
   <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.2"></script>
   <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.3"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.3"></script>
   <script src="stimuli5.js"></script>
   <style>
     .jspsych-display-element {
@@ -84,7 +85,7 @@
       "NBC.png",
       "ABC.png",
       "CBS.png",
-      "MSNBC.png",
+      "USAtoday.png",
       "NYT.png"
     ]
   };
@@ -319,17 +320,28 @@
   }
   timeline.push(if_node_consent)
 
-  /* var if_node_noCheck = {
-    timeline: [no_check, consent, if_node_consent, if_node_noConsent],
-    conditional_function: function () {
-      if (jsPsych.data.get().last(1).values()[0].response == 1 && check_consent == false) {
-        return true
-      } else {
-        return false
-      }
-    }
+
+  var test = {
+    type: jsPsychImageKeyboardResponse,
+    stimulus: 'ABC.png',
+    choices: ['f', 'j'],
+    prompt: "<div><p>Climate trends caused by shifting ocean currents, unrelated to human activity</p>" +
+      `<img src="instructions-buttons.png" class="headline-image"></div>`,
   }
-  timeline.push(if_node_noCheck) */
+  timeline.push(test);
+
+  var test2 = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `<div class="stimulus-container">
+      <img src="ABC.png">
+        <p class="headline-text">Climate trends caused by shifting ocean currents, unrelated to human activity</p>
+        <img src="instructions-buttons.png" class="headline-image">
+      </div>`,
+    choices: ['f', 'j'],
+    //stimulus_width: 150,
+    //maintain_aspect_ratio: true,
+  }
+  timeline.push(test2);
 
   /* Prior belief measurement */
   var prior_instructions = {
@@ -533,7 +545,7 @@
   var source6 = {
     type: jsPsychHtmlSliderResponse,
     stimulus: `<div style="width:500px;">
-        <p>MSNBC</p>
+        <p>USA Today</p>
         </div>`,
     min: -100,
     max: 100,
@@ -606,40 +618,6 @@
     });
   }
 
-
-  /* //This function determines the highest and lowest perceived credibility values and assigns them to a dictionary 
-  function getKeysWithExtremeValues(obj) {
-    return Object.keys(obj).reduce((result, key) => {
-      if (!result.highest.value || obj[key] > result.highest.value) {
-        result.highest = { value: obj[key], keys: [key] };
-      } else if (obj[key] === result.highest.value) {
-        result.highest.keys.push(key);
-      }
-
-      if (!result.lowest.value || obj[key] < result.lowest.value) {
-        result.lowest = { value: obj[key], keys: [key] };
-      } else if (obj[key] === result.lowest.value) {
-        result.lowest.keys.push(key);
-      }
-
-      if (!result.middle.value1 || Math.abs(obj[key] - median) < Math.abs(result.middle.value1 - median)) {
-      result.middle.value2 = result.middle.value1;
-      result.middle.keys2 = result.middle.keys1;
-      result.middle.value1 = obj[key];
-      result.middle.keys1 = [key];
-    } else if (obj[key] === result.middle.value1) {
-      result.middle.keys1.push(key);
-    } else if (!result.middle.value2 || Math.abs(obj[key] - median) < Math.abs(result.middle.value2 - median)) {
-      result.middle.value2 = obj[key];
-      result.middle.keys2 = [key];
-    } else if (obj[key] === result.middle.value2) {
-      result.middle.keys2.push(key);
-    }
-
-      return result;
-    }, { highest: { value: null, keys: [] }, lowest: { value: null, keys: [] } });
-  } */
-
   var source_cred_dict, extremes_cred_sources = {}
 
   /* First block of instructions */
@@ -661,7 +639,7 @@
         "NBC": source_cred[2],
         "ABC": source_cred[3],
         "CBS": source_cred[4],
-        "MSNBC": source_cred[5],
+        "USAtoday": source_cred[5],
         "NYT": source_cred[6]
       }
 
@@ -677,7 +655,7 @@
     "NBC": "NBC.png",
     "ABC": "ABC.png",
     "CBS": "CBS.png",
-    "MSNBC": "MSNBC.png",
+    "USAtoday": "USAtoday.png",
     "NYT": "NYT.png"
   }
 
@@ -728,15 +706,13 @@
   /* For loop to add practice trials to timeline */
   for (let i = 0; i < practice_stimuli.length; i++) {
     var practice_trial = {
-      type: jsPsychHtmlKeyboardResponse,
+      type: jsPsychImageKeyboardResponse,
       stimulus: function () {
-        return `<div class="stimulus-container">
-        <p class="headline-text">${practice_stimuli_randomized[i].text}</p>
-        <p style="text-align: right; margin-right: 120px;">
-          ${practice_stimuli_randomized[i].source_function()}
-        </p>
-        <img src="instructions-buttons.png" class="headline-image">
-      </div>`;
+        return `${source_image_dict[practice_stimuli_randomized[i].source_function()]}`
+      },
+      prompt: function () {
+        return `<div><p>${practice_stimuli_randomized[i].text}</p>` +
+          `<img src="instructions-buttons.png" class="headline-image"></div>`
       },
       choices: ["f", "j"],
       trial_duration: 8000,
@@ -822,7 +798,7 @@
         source_counts[topic] = {
           congruent: { high: 0, low: 0 },
           incongruent: { high: 0, low: 0 }
-        }; // this is to keep count of how many high and low credibility sources were assigned accross topics and conditions
+        }; // this is to keep count of how many high and low credibility sources were assigned across topics and conditions
       });
 
       let middle_sources = [...extremes_cred_sources.middle.keys1, ...extremes_cred_sources.middle.keys2]; // Combine middle sources into array
@@ -867,17 +843,25 @@
 
   timeline.push(fixation);
 
+  var test = {
+    type: jsPsychImageKeyboardResponse,
+    stimulus: 'ABC.png',
+    choices: ['f', 'j'],
+    prompt: "<div><p>Climate trends caused by shifting ocean currents, unrelated to human activity</p>" +
+      `<img src="instructions-buttons.png" class="headline-image"></div>`,
+  }
+  timeline.push(test);
+
   /* For loop to add stimuli to timeline by going through headline_stimuli */
   for (let i = 0; i < 100; i++) {
     var headline_trial = {
-      type: jsPsychHtmlKeyboardResponse,
+      type: jsPsychImageKeyboardResponse,
       stimulus: function () {
-        return `<div class="stimulus-container">` +
-          `<p class="headline-text">` +
-          headlines[i].text +
-          `</p>` +
-          `<img src="instructions-buttons.png" class="headline-image">` +
-          `</div>`
+        return `${source_image_dict[headlines[i].source.name]}`
+      },
+      prompt: function () {
+        return `<div><p>${headlines[i].text}</p>` +
+          `<img src="instructions-buttons.png" class="headline-image"></div>`
       },
       choices: ["f", "j"],
       trial_duration: 8000,
