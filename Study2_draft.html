@@ -320,29 +320,6 @@
   }
   timeline.push(if_node_consent)
 
-
-  var test = {
-    type: jsPsychImageKeyboardResponse,
-    stimulus: 'ABC.png',
-    choices: ['f', 'j'],
-    prompt: "<div><p>Climate trends caused by shifting ocean currents, unrelated to human activity</p>" +
-      `<img src="instructions-buttons.png" class="headline-image"></div>`,
-  }
-  timeline.push(test);
-
-  var test2 = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: `<div class="stimulus-container">
-      <img src="ABC.png">
-        <p class="headline-text">Climate trends caused by shifting ocean currents, unrelated to human activity</p>
-        <img src="instructions-buttons.png" class="headline-image">
-      </div>`,
-    choices: ['f', 'j'],
-    //stimulus_width: 150,
-    //maintain_aspect_ratio: true,
-  }
-  timeline.push(test2);
-
   /* Prior belief measurement */
   var prior_instructions = {
     type: jsPsychInstructions,
@@ -1063,12 +1040,7 @@
       <p>
         Explanation: there is no credible evidence that widespread voter fraud
         took place during the 2020 election. Although there may have been a
-        small number of cases (the Heritage foundation, a conservative think
-        tank, reported 1,500 proven instances across the US - see here:
-        <a target='_blank'href="https://www.heritage.org/voterfraud/#choose-a-state"
-          >https://www.heritage.org/voterfraud/#choose-a-state</a
-        >
-        ), this is unlikely to make a difference for an election in which almost
+        small number of isolated cases, this is unlikely to make a difference for an election in which almost
         155 million votes were cast (<a target='_blank'
           href="https://www.census.gov/newsroom/press-releases/2022/2020-presidential-election-voting-report.html"
           >https://www.census.gov/newsroom/press-releases/2022/2020-presidential-election-voting-report.html</a
