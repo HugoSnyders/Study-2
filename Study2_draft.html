@@ -554,46 +554,71 @@
   timeline.push(source7);
 
   function get_source_cred(obj) {
-    var values = Object.values(obj);
-    var sorted_values = [...values].sort((a, b) => a - b);
-    var median = (sorted_values[Math.floor((sorted_values.length - 1) / 2)] + sorted_values[Math.ceil((sorted_values.length - 1) / 2)]) / 2;
+  // Extract values from the input object and sort them
+  var values = Object.values(obj);
+  var sorted_values = [...values].sort((a, b) => a - b);
+  
+  // Calculate the median value
+  var median = (sorted_values[Math.floor((sorted_values.length - 1) / 2)] + sorted_values[Math.ceil((sorted_values.length - 1) / 2)]) / 2;
 
-    return Object.keys(obj).reduce((result, key) => {
-      // Highest and lowest logic (same as before)
-      if (!result.highest.value || obj[key] > result.highest.value) {
-        result.highest = { value: obj[key], keys: [key] };
-      } else if (obj[key] === result.highest.value) {
-        result.highest.keys.push(key);
+  // Initialize the result object with default values
+  let result = {
+    highest: { value: -Infinity, key: null },
+    lowest: { value: Infinity, key: null },
+    middle1: { value: null, key: null },
+    middle2: { value: null, key: null }
+  };
+
+  // Iterate through each source and its credibility rating
+  Object.keys(obj).forEach(key => {
+    // Check if this source has the highest credibility so far
+    if (obj[key] > result.highest.value || (obj[key] === result.highest.value && Math.random() < 0.5)) {
+      result.highest = { value: obj[key], key: key };
+    }
+    
+    // Check if this source has the lowest credibility so far
+    if (obj[key] < result.lowest.value || (obj[key] === result.lowest.value && Math.random() < 0.5)) {
+      result.lowest = { value: obj[key], key: key };
+    }
+    
+    // Handle middle sources
+    let diffFromMedian = Math.abs(obj[key] - median);
+    if (result.middle1.value === null) {
+      result.middle1 = { value: obj[key], key: key };
+    } else if (result.middle2.value === null) {
+      if (diffFromMedian < Math.abs(result.middle1.value - median)) {
+        result.middle2 = result.middle1;
+        result.middle1 = { value: obj[key], key: key };
+      } else {
+        result.middle2 = { value: obj[key], key: key };
       }
-
-      if (!result.lowest.value || obj[key] < result.lowest.value) {
-        result.lowest = { value: obj[key], keys: [key] };
-      } else if (obj[key] === result.lowest.value) {
-        result.lowest.keys.push(key);
+    } else {
+      let diff1 = Math.abs(result.middle1.value - median);
+      let diff2 = Math.abs(result.middle2.value - median);
+      if (diffFromMedian < diff1 || (diffFromMedian === diff1 && Math.random() < 0.5)) {
+        result.middle2 = result.middle1;
+        result.middle1 = { value: obj[key], key: key };
+      } else if (diffFromMedian < diff2 || (diffFromMedian === diff2 && Math.random() < 0.5)) {
+        result.middle2 = { value: obj[key], key: key };
       }
+    }
+  });
 
-      // Middle logic
-      if (!result.middle.value1 || Math.abs(obj[key] - median) < Math.abs(result.middle.value1 - median)) {
-        result.middle.value2 = result.middle.value1;
-        result.middle.keys2 = result.middle.keys1;
-        result.middle.value1 = obj[key];
-        result.middle.keys1 = [key];
-      } else if (obj[key] === result.middle.value1) {
-        result.middle.keys1.push(key);
-      } else if (!result.middle.value2 || Math.abs(obj[key] - median) < Math.abs(result.middle.value2 - median)) {
-        result.middle.value2 = obj[key];
-        result.middle.keys2 = [key];
-      } else if (obj[key] === result.middle.value2) {
-        result.middle.keys2.push(key);
-      }
-
-      return result;
-    }, {
-      highest: { value: null, keys: [] },
-      lowest: { value: null, keys: [] },
-      middle: { value1: null, keys1: [], value2: null, keys2: [] }
-    });
+  // Ensure middle1 and middle2 are different
+  if (result.middle1.key === result.middle2.key) {
+    let availableKeys = Object.keys(obj).filter(key => 
+      key !== result.highest.key && 
+      key !== result.lowest.key && 
+      key !== result.middle1.key
+    );
+    if (availableKeys.length > 0) {
+      let newMiddle2Key = availableKeys[Math.floor(Math.random() * availableKeys.length)];
+      result.middle2 = { value: obj[newMiddle2Key], key: newMiddle2Key };
+    }
   }
+
+  return result;
+}
 
   var source_cred_dict, extremes_cred_sources = {}
 
@@ -663,14 +688,14 @@
     {
       text: "1 cup of coffee a day shown to increase risk of cardiovascular disease",
       source_function: function () {
-        return extremes_cred_sources.middle.keys1[0]
+        return extremes_cred_sources.middle1.key
       },
       info: false
     },
     {
       text: "Kansas City beats San Fransisco in overtime at the 2024 Super Bowl",
       source_function: function () {
-        return extremes_cred_sources.middle.keys2[0]
+        return extremes_cred_sources.middle2.key
       },
       info: true
     },
@@ -766,68 +791,84 @@
 
       headlines = jsPsych.randomization.repeat(headlines, 1);
     },
-    on_finish: function () {
-      /* This function makes sure that source assignments are randomized and counterbalanced across
-      topics and congruence conditions */
-      let topics = ["Climate Change", "Vaccination", "GMO", "5G", "Voter Fraud"];
-      let source_counts = {};
-      topics.forEach(topic => {
-        source_counts[topic] = {
-          congruent: { high: 0, low: 0 },
-          incongruent: { high: 0, low: 0 }
-        }; // this is to keep count of how many high and low credibility sources were assigned across topics and conditions
-      });
-
-      let middle_sources = [...extremes_cred_sources.middle.keys1, ...extremes_cred_sources.middle.keys2]; // Combine middle sources into array
-      let middle_source_index = 0;
-
-      for (let i = 0; i < headlines.length; i++) {
-        let headline = headlines[i];
-        // This is specifically to assign the two middle sources to filler trials
-        if (headline.congruence === "filler") {
-          let source_name = middle_sources[middle_source_index % middle_sources.length]; // the modulo operation is to cycle through filler sources evenly
-          let credibility_value;
-          if (middle_source_index < extremes_cred_sources.middle.keys1.length) {
-            credibility_value = extremes_cred_sources.middle.value1;
-          } else {
-            credibility_value = extremes_cred_sources.middle.value2;
-          } // this is to make sure the right credibility value gets assigned to the source that's being used
-          headline.source = {
-            name: source_name,
-            credibility: "middle",
-            credibility_value: credibility_value
-          };
-          middle_source_index++;
-          // This is where sources get assigned to real trials
-        } else {
-          let topic_counts = source_counts[headline.topic];
-          let congruence = headline.congruence ? "congruent" : "incongruent";
-          let credibility = topic_counts[congruence].high <= topic_counts[congruence].low ? "highest" : "lowest"; // This is basically an if-then function that checks whether there are fewer or an equal number of high credibility sources compared to low
-          topic_counts[congruence][credibility === "highest" ? "high" : "low"]++; // this adds to add to the relevant counter for topic/congruence
-
-          let available_sources = extremes_cred_sources[credibility].keys;
-          let source_name = available_sources[Math.floor(Math.random() * available_sources.length)];
-          headline.source = {
-            name: source_name,
-            credibility: credibility,
-            credibility_value: extremes_cred_sources[credibility].value
-          };
-        }
+    on_start: function (data) {
+    // Assign congruence to headlines (unchanged)
+    for (let i = 0; i < headlines.length; i++) {
+      info = headlines[i].info;
+      flip = headlines[i].flipped;
+      if (headlines[i].topic == "Climate Change") {
+        headlines[i].congruence = congruence_function(0, info, flip);
+      } else if (headlines[i].topic == "Vaccination") {
+        headlines[i].congruence = congruence_function(1, info, flip);
+      } else if (headlines[i].topic == "GMO") {
+        headlines[i].congruence = congruence_function(2, info, flip);
+      } else if (headlines[i].topic == "5G") {
+        headlines[i].congruence = congruence_function(3, info, flip);
+      } else {
+        headlines[i].congruence = congruence_function(4, info, flip);
       }
     }
-  };
+
+    headline_fillers.forEach(obj => {
+      obj.congruence = "filler";
+    });
+
+    headlines.push(...headline_fillers);
+
+    headlines = jsPsych.randomization.repeat(headlines, 1);
+  },
+  on_finish: function () {
+    let topics = ["Climate Change", "Vaccination", "GMO", "5G", "Voter Fraud"];
+    let source_counts = {};
+    topics.forEach(topic => {
+      source_counts[topic] = {
+        congruent: { high: 0, low: 0 },
+        incongruent: { high: 0, low: 0 }
+      };
+    });
+
+    // Get source credibility information
+    let extremes_cred_sources = get_source_cred(source_cred_dict);
+
+    // Prepare middle sources for filler trials
+    let middle_sources = [extremes_cred_sources.middle1, extremes_cred_sources.middle2];
+    let middle_source_index = 0;
+
+    for (let i = 0; i < headlines.length; i++) {
+      let headline = headlines[i];
+      if (headline.congruence === "filler") {
+        // Assign middle sources to filler trials
+        let middleSource = middle_sources[middle_source_index % 2];
+        headline.source = {
+          name: middleSource.key,
+          credibility: "middle",
+          credibility_value: middleSource.value
+        };
+        middle_source_index++;
+      } else {
+        let topic_counts = source_counts[headline.topic];
+        let congruence = headline.congruence.toLowerCase();
+        
+        // Determine whether to use high or low credibility source
+        let use_high_cred = topic_counts[congruence].high <= topic_counts[congruence].low;
+        let credibility = use_high_cred ? "highest" : "lowest";
+        
+        // Update the count
+        topic_counts[congruence][use_high_cred ? "high" : "low"]++;
+
+        // Assign the source
+        headline.source = {
+          name: extremes_cred_sources[credibility].key,
+          credibility: credibility,
+          credibility_value: extremes_cred_sources[credibility].value
+        };
+      }
+    }
+  }
+};
   timeline.push(instructions_2);
 
   timeline.push(fixation);
-
-  var test = {
-    type: jsPsychImageKeyboardResponse,
-    stimulus: 'ABC.png',
-    choices: ['f', 'j'],
-    prompt: "<div><p>Climate trends caused by shifting ocean currents, unrelated to human activity</p>" +
-      `<img src="instructions-buttons.png" class="headline-image"></div>`,
-  }
-  timeline.push(test);
 
   /* For loop to add stimuli to timeline by going through headline_stimuli */
   for (let i = 0; i < 100; i++) {
