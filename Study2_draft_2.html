@@ -27,6 +27,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      box-sizing: border-box;
+      /* ensures padding and border are included in the width */
     }
 
 
@@ -38,30 +40,40 @@
     }
 
     .source-image {
-      max-width: 300px;
-      max-height: 150px;
+      max-width: 200px;
+      max-height: 100px;
       width: auto;
       height: auto;
       margin-right: 30px;
-      margin-left: 80px;
+      margin-left: 150px;
     }
 
 
     .headline-text {
       flex: initial;
       margin: 0;
+      text-align: left;
     }
-
-    /* .headline-image {
-      max-width: 100%;
-      height: auto;
-    } */
 
     .headline-image {
-      width: 40%;
-      height: 40%;
+      width: 400px;
+      height: auto;
       margin-top: 60px;
+      max-width: 100%;
     }
+
+    .source-question-square {
+      width: 200px;
+      height: auto;
+      max-width: 100%;
+    }
+
+    .source-question-long {
+      width: auto;
+      height: 75px;
+      max-width: 100%;
+    }
+
 
     h2 {
       font-weight: bold;
@@ -128,12 +140,12 @@
     stimulus: `<div class="consent"
       <h2>Welcome! Please read the following consent form carefully.</h2>
       <p>
-        In this scientific study we are interested in how people process and
-        evaluate new information. We will begin by asking you to what extent you
-        agree with statements concerning 5 different topics.
-        After that, you will be asked to indicate whether you think various news
-        headlines are true or false. Finally, we will ask you about your political preferences,
-        and debrief you on the experiment. In total, this task will take approximately
+        Thank you for your interest in participating in this scientific study. In this study we
+        are interested in how people process and evaluate new information. We will begin by asking 
+        you to what extent you agree with statements concerning 5 different topics, and how credible 
+        you find various news sources.After that, you will be asked to indicate whether you think 
+        various news headlines are true or false. Finally, we will ask you about your political 
+        preferences, and debrief you on the experiment. In total, this task will take approximately
         15 minutes to complete. In return for your participation, you will
         receive a financial compensation of $2.75 (following the policy on
         participant payment by Prolific).
@@ -352,12 +364,30 @@
   }
   timeline.push(if_node_consent)
 
+  var test = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function () {
+      return `
+        <div class="stimulus-container">
+          <div class="headline-row">
+            <img src=CNN.png class="source-image">
+            <p class="headline-text">This is a test words words words words</p>
+          </div>
+          <img src="instructions-buttons.png" class="headline-image">
+        </div>
+      `;
+    },
+    choices: ["f", "j"],
+  };
+  timeline.push(test);
+
   /* Prior belief measurement */
   var prior_instructions = {
     type: jsPsychInstructions,
     pages: [
       `<div style="width:750px;">
-        <p>You will first be shown five statements. For each statement you will be asked to indicate to what extent you agree or disagree with that statement.</p>
+        <p>You will now be presented with five statements. For each statement, please indicate
+          to indicate to what extent you agree or disagree with that statement.</p>
         </div>`],
     show_clickable_nav: true,
   };
@@ -458,7 +488,7 @@
     type: jsPsychInstructions,
     pages: [
       `<div style="width:750px;">
-        <p>Thank you. You will now be shown a series of news sources, and we ask that you indicate for each source how much you trust it.</p>
+        <p>Thank you. We will now show you a series of news sources. Please indicate how you trust each news source.</p>
         </div>`],
     show_clickable_nav: true,
   };
@@ -467,7 +497,7 @@
   var source1 = {
     type: jsPsychHtmlSliderResponse,
     stimulus: `<div style="width:500px;">
-        <img src="CNN.png" class="headline-image">
+        <img src="CNN.png" class="source-question-square">
         <p class="blank-line"> </p>
         </div>`,
     min: -100,
@@ -485,7 +515,7 @@
   var source2 = {
     type: jsPsychHtmlSliderResponse,
     stimulus: `<div style="width:500px;">
-        <img src="Fox2.png" class="headline-image">
+        <img src="Fox2.png" class="source-question-square">
         <p class="blank-line"> </p>
         </div>`,
     min: -100,
@@ -503,7 +533,7 @@
   var source3 = {
     type: jsPsychHtmlSliderResponse,
     stimulus: `<div style="width:500px;">
-        <img src="NBC2.png" class="headline-image">
+        <img src="NBC2.png" class="source-question-square">
         <p class="blank-line"> </p>
         </div>`,
     min: -100,
@@ -521,7 +551,7 @@
   var source4 = {
     type: jsPsychHtmlSliderResponse,
     stimulus: `<div style="width:500px;">
-        <img src="ABC.png" class="headline-image">
+        <img src="ABC.png" class="source-question-square">
         <p class="blank-line"> </p>
         </div>`,
     min: -100,
@@ -539,7 +569,7 @@
   var source5 = {
     type: jsPsychHtmlSliderResponse,
     stimulus: `<div style="width:500px;">
-        <img src="CBS.png" class="headline-image">
+        <img src="CBS.png" class="source-question-long">
         <p class="blank-line"> </p>
         </div>`,
     min: -100,
@@ -557,7 +587,7 @@
   var source6 = {
     type: jsPsychHtmlSliderResponse,
     stimulus: `<div style="width:500px;">
-        <img src="USAtoday.png" class="headline-image">
+        <img src="USAtoday.png" class="source-question-long">
         <p class="blank-line"> </p>
         </div>`,
     min: -100,
@@ -575,7 +605,7 @@
   var source7 = {
     type: jsPsychHtmlSliderResponse,
     stimulus: `<div style="width:500px;">
-        <img src="NYT.png" class="headline-image">
+        <img src="NYT.png" class="source-question-long">
         <p class="blank-line"> </p>
         </div>`,
     min: -100,
@@ -663,12 +693,12 @@
   var instructions_1 = {
     type: jsPsychInstructions,
     pages: [
-      `<p>Thank you. We will now provide you with instructions for the experimental task.</p>`,
-      `<p>You will be shown a series of news headlines, and we will ask you <br> to indicate whether you think the content of each headline is <b>true</b> or <b>false.</b>
-        <br> <br> This is not a test with right or wrong answers. We just want to know what <i>you</i> think <br> about each headline. </p>`,
+      `<p style="width:800px;">Thank you. We will now provide you with instructions for the experimental task.</p>`,
+      `<p style="width:800px;">We will now show you a series of news headlines. Please indicate whether you think the content of each headline is <b>true</b> or <b>false.</b>
+        <br> <br> This is not a test with right or wrong answers. We just want to know what <i>you</i> think about each headline. </p>`,
       `<img src='instructions-keys.png' style='width:70%;height:70%;margin-left:20px'></img>`,
-      `<p>Note: for each choice you will have 8 seconds to make your decision. <br> <br> We recommend you keep your index fingers on the 'f' and 'j' keys.</p>`,
-      `<p>We will first have you do two practice trials to help familiarize <br> you with how the experiment works. <br> <br> Press 'Next' to continue.</p>`,
+      `<p style="width:800px;">Note: for each choice you will have 8 seconds to make your decision. <br> <br> We recommend you keep your index fingers on the 'F' and 'J' keys.</p>`,
+      `<p style="width:800px;">We will first have you do two practice trials to help familiarize <br> you with how the experiment works. <br> <br> Press 'Next' to continue.</p>`,
     ],
     show_clickable_nav: true,
     on_start: function () {
@@ -745,13 +775,17 @@
   /* For loop to add practice trials to timeline */
   for (let i = 0; i < practice_stimuli.length; i++) {
     var practice_trial = {
-      type: jsPsychImageKeyboardResponse,
+      type: jsPsychHtmlKeyboardResponse,
       stimulus: function () {
-        return `${source_image_dict[practice_stimuli_randomized[i].source_function()]}`
-      },
-      prompt: function () {
-        return `<div><p>${practice_stimuli_randomized[i].text}</p>` +
-          `<img src="instructions-buttons.png" class="headline-image"></div>`
+        return `
+        <div class="stimulus-container">
+          <div class="headline-row">
+            <img src=${source_image_dict[practice_stimuli_randomized[i].source_function()]} class="source-image">
+            <p class="headline-text">${practice_stimuli_randomized[i].text}</p>
+          </div>
+          <img src="instructions-buttons.png" class="headline-image">
+        </div>
+      `;
       },
       choices: ["f", "j"],
       trial_duration: 8000,
@@ -946,8 +980,8 @@
     type: jsPsychInstructions,
     pages: [
       `<div style="width:800px;">
-      <p>Thank you for completing the experimental task. We will now ask you one final survey question regarding your
-        political preferences, and after that you will be debriefed and provided with a Prolific completion code.</p>
+      <p>Thank you. We will now ask you one final survey question regarding your
+        political preferences. Afterwards, we will provide you with information regarding the task you just completed. Please note that at the end, you will be provided with a Prolific completion code. You will need this code to receive payment for your participation.</p>
         </div>`,
     ],
     show_clickable_nav: true,
@@ -990,8 +1024,9 @@
         were not based on any factual evidence). Below we will list which groups
         of headlines are fake (printed in <b>bold</b>), and we will also give an
         explanation of why the best available evidence contradicts the content
-        of those headlines:
+        of those headlines.
       </p>
+      <h3>The following headlines were fake:</h3>
       <p>
         <b
           >Headlines that suggest anthropogenic climate change is not
