@@ -364,7 +364,7 @@
   }
   timeline.push(if_node_consent)
 
-  var test = {
+/*   var test = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: function () {
       return `
@@ -379,15 +379,15 @@
     },
     choices: ["f", "j"],
   };
-  timeline.push(test);
+  timeline.push(test); */
 
   /* Prior belief measurement */
   var prior_instructions = {
     type: jsPsychInstructions,
     pages: [
       `<div style="width:750px;">
-        <p>You will now be presented with five statements. For each statement, please indicate
-          to indicate to what extent you agree or disagree with that statement.</p>
+        <p>You will now be presented with five statements. For each statement, 
+        please indicate to what extent you agree or disagree with that statement.</p>
         </div>`],
     show_clickable_nav: true,
   };
@@ -488,7 +488,7 @@
     type: jsPsychInstructions,
     pages: [
       `<div style="width:750px;">
-        <p>Thank you. We will now show you a series of news sources. Please indicate how you trust each news source.</p>
+        <p>Thank you. We will now show you a series of news sources. Please indicate how you much trust each news source.</p>
         </div>`],
     show_clickable_nav: true,
   };
@@ -753,14 +753,14 @@
   /* Create practice trial stimuli */
   var practice_stimuli = [
     {
-      text: "1 cup of coffee a day shown to increase risk of cardiovascular disease",
+      text: "1 cup of coffee a day causes increased risk of cardiovascular disease",
       source_function: function () {
         return extremes_cred_sources.middle1.key
       },
       info: false
     },
     {
-      text: "Kansas City beats San Fransisco in overtime at the 2024 Super Bowl",
+      text: "Kansas City beats San Francisco in overtime at the 2024 Super Bowl",
       source_function: function () {
         return extremes_cred_sources.middle2.key
       },
@@ -837,31 +837,6 @@
       `<p>Whenever you're ready to start the experiment, press 'Next'.</p>`,
     ],
     show_clickable_nav: true,
-    on_start: function (data) {
-      for (let i = 0; i < headlines.length; i++) {
-        info = headlines[i].info;
-        flip = headlines[i].flipped;
-        if (headlines[i].topic == "Climate Change") {
-          headlines[i].congruence = congruence_function(0, info, flip);
-        } else if (headlines[i].topic == "Vaccination") {
-          headlines[i].congruence = congruence_function(1, info, flip);
-        } else if (headlines[i].topic == "GMO") {
-          headlines[i].congruence = congruence_function(2, info, flip);
-        } else if (headlines[i].topic == "5G") {
-          headlines[i].congruence = congruence_function(3, info, flip);
-        } else {
-          headlines[i].congruence = congruence_function(4, info, flip);
-        }
-      }
-
-      headline_fillers.forEach(obj => {
-        obj.congruence = "filler";
-      });
-
-      headlines.push(...headline_fillers)
-
-      headlines = jsPsych.randomization.repeat(headlines, 1);
-    },
     on_start: function (data) {
       // Assign congruence to headlines (unchanged)
       for (let i = 0; i < headlines.length; i++) {
