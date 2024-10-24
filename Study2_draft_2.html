@@ -975,8 +975,8 @@
           length: headlines[i].length,
           source_name: headlines[i].source.name,
           source_cat: headlines[i].source.credibility,
-          source_num: headlines[i].source.credibility_value,  
-          trial: i + 1, 
+          source_num: headlines[i].source.credibility_value,
+          trial: i + 1,
         }
       },
       on_start: function (data) {
@@ -1022,17 +1022,15 @@
     stimulus: `<div class="consent"
     <h2>Debrief</h2>
       <p>
-        Thank you for participating in this study. The aim of this study is to
-        better understand how people's prior beliefs (and the certainty with
-        which they hold those beliefs) influence their likelihood of believing
-        in headlines that either contradict or conform to those prior beliefs,
-        and the extent to which they deliberate when assessing those headlines.
+        Thank you for participating in this study. The aim of this study was twofold:
+A) To understand how people's prior beliefs (and the certainty with which they hold those beliefs) influence their likelihood of believing in headlines that either contradict or conform to those prior beliefs, and the extent to which they deliberate when assessing those headlines.
+B) To examine how the perceived credibility of a news source influences the likelihood of believing an associated headline, and how this impacts the cognitive deliberation process during headline assessment.
       </p>
       <p>
         NOTE: <br />
         As part of this experiment you will have seen several headlines that
         were not factual (these headlines were created with generative AI and
-        were not based on any factual evidence). Below we will list which groups
+        were not based on any factual evidence).Additionally, sources were assigned to headlines randomly, and the combinations of headlines and sources you were presented with do not reflect actual news publications by those sources. Below we will list which groups
         of headlines are fake (printed in <b>bold</b>), and we will also give an
         explanation of why the best available evidence contradicts the content
         of those headlines.
@@ -1209,6 +1207,8 @@
           href="https://www.politifact.com/article/2020/nov/20/fact-checking-false-claims-about-2020-election/"
           >https://www.politifact.com/article/2020/nov/20/fact-checking-false-claims-about-2020-election/</a
         >
+        <p><b> Headlines unrelated to the topics (climate change, vaccination, GMOs, 5G, and voter fraud) you were initially asked about. These typically concerned new 'developments' in science, technology, medicine, and economics.</b></p>
+        <p>These headlines were also generated with the use of generative AI, and although they do not necessarily contradict the best available scientific evidence, they were also not based on any factual evidence, and were generated randomly.</p>
       </p>
     </div>`,
     choices: ['Next']
