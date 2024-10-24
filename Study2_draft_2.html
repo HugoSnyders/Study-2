@@ -40,8 +40,8 @@
     }
 
     .source-image {
-      max-width: 200px;
-      max-height: 100px;
+      max-width: 250px;
+      max-height: 110px;
       width: auto;
       height: auto;
       margin-right: 30px;
@@ -129,7 +129,8 @@
       "ABC.png",
       "CBS.png",
       "USAtoday.png",
-      "NYT.png"
+      "NYT.png",
+      "NYT2.png"
     ]
   };
 
@@ -364,14 +365,14 @@
   }
   timeline.push(if_node_consent)
 
-/*   var test = {
+  var test = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: function () {
       return `
         <div class="stimulus-container">
           <div class="headline-row">
-            <img src=CNN.png class="source-image">
-            <p class="headline-text">This is a test words words words words</p>
+            <img src=NYT.png class="source-image">
+            <p class="headline-text">Record-breaking high temperatures increase risk of droughts globally</p>
           </div>
           <img src="instructions-buttons.png" class="headline-image">
         </div>
@@ -379,7 +380,41 @@
     },
     choices: ["f", "j"],
   };
-  timeline.push(test); */
+  timeline.push(test);
+
+  var test2 = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function () {
+      return `
+        <div class="stimulus-container">
+          <div class="headline-row">
+            <img src=NYT2.png class="source-image">
+            <p class="headline-text">Record-breaking high temperatures increase risk of droughts globally</p>
+          </div>
+          <img src="instructions-buttons.png" class="headline-image">
+        </div>
+      `;
+    },
+    choices: ["f", "j"],
+  };
+  timeline.push(test2);
+
+  var test3 = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function () {
+      return `
+        <div class="stimulus-container">
+          <div class="headline-row">
+            <img src=CNN.png class="source-image">
+            <p class="headline-text">Record-breaking high temperatures increase risk of droughts globally</p>
+          </div>
+          <img src="instructions-buttons.png" class="headline-image">
+        </div>
+      `;
+    },
+    choices: ["f", "j"],
+  };
+  timeline.push(test3);
 
   /* Prior belief measurement */
   var prior_instructions = {
@@ -693,11 +728,9 @@
   var instructions_1 = {
     type: jsPsychInstructions,
     pages: [
-      `<p style="width:800px;">Thank you. We will now provide you with instructions for the experimental task.</p>`,
       `<p style="width:800px;">We will now show you a series of news headlines. Please indicate whether you think the content of each headline is <b>true</b> or <b>false.</b>
-        <br> <br> This is not a test with right or wrong answers. We just want to know what <i>you</i> think about each headline. </p>`,
-      `<img src='instructions-keys.png' style='width:70%;height:70%;margin-left:20px'></img>`,
-      `<p style="width:800px;">Note: for each choice you will have 8 seconds to make your decision. <br> <br> We recommend you keep your index fingers on the 'F' and 'J' keys.</p>`,
+        <br> <br> There are no right or wrong answers. We just want to know what <i>you</i> think about each headline. </p>`,
+      `<img src='instructions-keys.png' style='width:70%;height:70%;margin-left:20px;margin-bottom:40px;'></img>`,
       `<p style="width:800px;">We will first have you do two practice trials to help familiarize <br> you with how the experiment works. <br> <br> Press 'Next' to continue.</p>`,
     ],
     show_clickable_nav: true,
@@ -940,7 +973,10 @@
           code: headlines[i].code,
           info: headlines[i].info,
           length: headlines[i].length,
-          trial: i + 1, // check to make sure this works
+          source_name: headlines[i].source.name,
+          source_cat: headlines[i].source.credibility,
+          source_num: headlines[i].source.credibility_value,  
+          trial: i + 1, 
         }
       },
       on_start: function (data) {
